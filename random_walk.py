@@ -1,7 +1,4 @@
-import networkx as nx
-import pandas as pd
 import numpy as np
-import random
 
 #シンプルランダムウォーク
 def simple_random_walk(G, walk_length, start_position):
@@ -20,11 +17,9 @@ def simple_random_walk(G, walk_length, start_position):
     start_position : int
                      ランダムウォークを開始する位置のノード番号
     ----------
-    
     各ノードへの遷移確率が等しい場合のランダムウォーク
     
-    """
-    
+    """ 
     now = start_position
     length = 0
     
@@ -35,12 +30,10 @@ def simple_random_walk(G, walk_length, start_position):
         
         #接続ノードリストからランダムで一つ選択(等確率)
         selected = np.random.choice(list(G.neighbors(now)))
-        
         walk.append(selected)
         
         now = selected
         length += 1
-    
     return walk
 
 
@@ -56,20 +49,49 @@ def select_by_degree(G, now):
     now: int
         　現在位置(ノード番号)
     ----------
-    
     各ノードの次数に応じた重み付き抽選
-    
-    重み = 対象ノードの次数 / 各接続ノードの次数の和
+    重み = 対象ノードの次数 / 接続ノードの次数の和
     
     """
     #各接続ノードの次数リスト
-    node_degrees = [G.degree(i) for i in list(G.neighbors(0))]
+    node_degrees = [G.degree(i) for i in list(G.neighbors(now))]
     
     total_degree = sum(node_degrees)
     #重み
     prob = [degree / total_degree for degree in node_degrees]
     
-    selected =  np.random.choice(list(G.neighbors(0)), 
+    selected =  np.random.choice(list(G.neighbors(now)), 
+                                 size=1, 
+                                 p=prob)
+    return selected[0]
+
+def select_by_reverse_degree(G, now):
+    """
+    返り値: int
+          選択されたノード番号
+          
+    Parameters
+    ----------
+    G : networkx graph
+    
+    now: int
+        　現在位置(ノード番号)
+    ----------
+    
+    各ノードの次数に反比例した重み付き抽選
+    
+    重み = 対象ノードの次数の逆数 / 各接続ノードの次数の逆数和
+    
+    """
+    #各接続ノードの次数リスト(逆数)
+    node_degrees = [1 / G.degree(i) for i in list(G.neighbors(now))]
+    
+    total_degree = sum(node_degrees)
+    
+    #重み
+    prob = [degree / total_degree for degree in node_degrees]
+    
+    selected =  np.random.choice(list(G.neighbors(now)), 
                                  size=1, 
                                  p=prob)
     return selected[0]
