@@ -44,3 +44,5 @@ def simple_random_walk(G, walk_length, start_position):
     return walk
 
 #選択確率
+def degree_choice():
+    return choiced
