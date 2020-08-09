@@ -43,6 +43,33 @@ def simple_random_walk(G, walk_length, start_position):
     
     return walk
 
-#選択確率
-def degree_choice():
-    return choiced
+
+def select_by_degree(G, now):
+    """
+    返り値: int
+          選択されたノード番号
+          
+    Parameters
+    ----------
+    G : networkx graph
+    
+    now: int
+        　現在位置(ノード番号)
+    ----------
+    
+    各ノードの次数に応じた重み付き抽選
+    
+    重み = 対象ノードの次数 / 各接続ノードの次数の和
+    
+    """
+    #各接続ノードの次数リスト
+    node_degrees = [G.degree(i) for i in list(G.neighbors(0))]
+    
+    total_degree = sum(node_degrees)
+    #重み
+    prob = [degree / total_degree for degree in node_degrees]
+    
+    selected =  np.random.choice(list(G.neighbors(0)), 
+                                 size=1, 
+                                 p=prob)
+    return selected[0]
