@@ -2,14 +2,6 @@ import networkx as nx
 import pandas as pd
 import numpy as np
 import random
-%matplotlib inline
-import matplotlib.pyplot as plt
-
-G = nx.barabasi_albert_graph(10,2)
-
-nx.draw_networkx(G)
-plt.axis("off")
-
 
 #シンプルランダムウォーク
 def simple_random_walk(G, walk_length, start_position):
