@@ -1,4 +1,4 @@
-# H1 random walk on networkx graph
+# random walk on networkx graph
 
 研究でネットワーク上ランダムウォークのシミュレーションを行った際に作成.  
 networkxで作成したグラフ上でのrandom walkシミュレーションを行うための関数.  
