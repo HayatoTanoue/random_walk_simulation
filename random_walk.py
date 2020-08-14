@@ -3,20 +3,23 @@ import networkx as nx
 
 def select_by_degree(G, now):
     """
-    返り値: int
-          選択されたノード番号
-          
+    各ノードの次数に応じた重み付き抽選
+    重み = 対象ノードの次数 / 接続ノードの次数の和
+
     Parameters
     ----------
     G : networkx graph
-    
+        
     now : int
-        　現在位置(ノード番号)
-    ----------
-    各ノードの次数に応じた重み付き抽選
-    重み = 対象ノードの次数 / 接続ノードの次数の和
-    
+        walkerの現状の位置(ノード番号)
+
+    Returns
+    -------
+    selected : int
+        選択されたノード番号
+
     """
+    
     #各接続ノードの次数リスト
     node_degrees = [G.degree(i) for i in list(G.neighbors(now))]
     
@@ -27,26 +30,29 @@ def select_by_degree(G, now):
     selected =  np.random.choice(list(G.neighbors(now)), 
                                  size=1, 
                                  p=prob)
-    return selected[0]
+    selected = selected[0]
+    
+    return selected
 
 def select_by_reverse_degree(G, now):
     """
-    返り値 : int
-          選択されたノード番号
-          
+    各ノードの次数に反比例した重み付き抽選
+    重み = 対象ノードの次数の逆数 / 各接続ノードの次数の逆数和
+
     Parameters
     ----------
     G : networkx graph
-    
-    now: int
-        　現在位置(ノード番号)
-    ----------
-    
-    各ノードの次数に反比例した重み付き抽選
-    
-    重み = 対象ノードの次数の逆数 / 各接続ノードの次数の逆数和
-    
+        
+    now : int
+        walkerの現状の位置(ノード番号)
+
+    Returns
+    -------
+    selected : int
+        選択されたノード番号
+
     """
+    
     #各接続ノードの次数リスト(逆数)
     node_degrees = [1 / G.degree(i) for i in list(G.neighbors(now))]
     
@@ -58,30 +64,34 @@ def select_by_reverse_degree(G, now):
     selected =  np.random.choice(list(G.neighbors(now)), 
                                  size=1, 
                                  p=prob)
-    return selected[0]
+    selected = selected[0]
+    
+    return selected
 
-def select_add_wight(G, now, weight_list, add_weight):
+def select_add_weight(G, now, weight_list, add_weight):
     """
-    返り値 : int 選択されたノード番号
-            list 重みを更新した weight_list
-          
-    Parameters
-    ----------
-    G : networkx graph
-    
-    now : int
-        　現在位置(ノード番号)
-         
-    weight_list : list
-                  edgeの重みリスト
-    
-    add_weight : float
-                　random walker 通過時のエッジ強化量
-    ----------
-    
     エッジの重みに応じた選択確率でノードを選択する
     
     通過したエッジにadd_wieight分エッジの重みを追加する
+
+    Parameters
+    ----------
+    G : networkx graph
+        
+    now : int
+        walkerの現状の位置(ノード番号)
+    weight_list : list
+        now node と接続しているノードとの重みリスト
+    add_weight : float
+        エッジの強化量
+
+    Returns
+    -------
+    selected : int
+        選択されたノード番号
+    weight_list : list
+        選択されたエッジの重みを追加したエッジの重みリスト
+
     """
     
     #重み
@@ -93,28 +103,35 @@ def select_add_wight(G, now, weight_list, add_weight):
     
     weight_list[ selected[0] ] += add_weight
     
-    return selected[0],  weight_list
+    selected = selected[0]
+    
+    return selected,  weight_list
 
 
 def select_add_degree(G, now, weight_list):
     """
-    返り値 : int 選択されたノード番号
-            list 重みを更新した weight_list
-          
-    Parameters
-    ----------
-    G : networkx graph
-    
-    now : int
-        　現在位置(ノード番号)
-         
-    weight_list : list
-                  edgeの重みリスト
-    ----------
-    
     エッジの重みに応じた選択確率でノードを選択する
     
     通過したエッジに次数分エッジの重みを追加する
+
+    Parameters
+    ----------
+    G : networkx graph
+        
+    now : int
+        walkerの現状の位置(ノード番号)
+    weight_list : list
+        now node と接続しているノードとの重みリスト
+    add_weight : float
+        エッジの強化量
+
+    Returns
+    -------
+    selected : int
+        選択されたノード番号
+    weight_list : list
+        選択されたエッジの重みを追加したエッジの重みリスト
+
     """
     
     #重み
@@ -126,28 +143,30 @@ def select_add_degree(G, now, weight_list):
     
     weight_list[ selected[0] ] += G.degree( now )
     
-    return selected[0],  weight_list
+    selected = selected[0]
+    
+    return selected,  weight_list
 
 
 def simple_random_walk(G, walk_length, start_position):
     """
-    返り値: list
-          ランダムウォークの訪問ノードリスト
-          
+    シンプルランダムウォーク : 各ノードへの遷移確率が等しい random walk
+    
     Parameters
     ----------
     G : networkx graph
-        networkxで作成したgraph, このグラフ上をランダムウォークする。
-    
+        random walk を行うネットワーク
     walk_length : int
-                  ランダムウォークのステップ数(歩数)
-    
+        random walk のステップ数(歩数)
     start_position : int
-                     ランダムウォークを開始する位置のノード番号
-    ----------
-    各ノードへの遷移確率が等しい場合のランダムウォーク
-    
-    """ 
+        random walk を行う際のスタート位置(ノード番号)
+
+    Returns
+    -------
+    walk : list
+        random walk の訪問ノードリスト
+
+    """
     now = start_position
     length = 0
     
@@ -166,21 +185,21 @@ def simple_random_walk(G, walk_length, start_position):
 
 def degree_random_walk(G, walk_length, start_position):
     """
+    次数比例ランダムウォーク : 遷移確率が次数に比例する random walk
     
-
     Parameters
     ----------
-    G : TYPE
-        DESCRIPTION.
-    walk_length : TYPE
-        DESCRIPTION.
-    start_position : TYPE
-        DESCRIPTION.
+    G : networkx graph
+        random walk を行うネットワーク
+    walk_length : int
+        random walk のステップ数(歩数)
+    start_position : int
+        random walk を行う際のスタート位置(ノード番号)
 
     Returns
     -------
-    walk : TYPE
-        DESCRIPTION.
+    walk : list
+        random walk の訪問ノードリスト
 
     """
     now = start_position
@@ -201,22 +220,22 @@ def degree_random_walk(G, walk_length, start_position):
 
 def reverse_degree_random_walk(G, walk_length, start_position):
     """
+    次数逆数比例ランダムウォーク : 遷移確率が次数に反比例する random walk
     
-
     Parameters
     ----------
-    G : TYPE
-        DESCRIPTION.
-    walk_length : TYPE
-        DESCRIPTION.
-    start_position : TYPE
-        DESCRIPTION.
+    G : networkx graph
+        random walk を行うネットワーク
+    walk_length : int
+        random walk のステップ数(歩数)
+    start_position : int
+        random walk を行う際のスタート位置(ノード番号)
 
     Returns
     -------
-    walk : TYPE
-        DESCRIPTION.
-
+    walk : list
+        random walk の訪問ノードリスト
+        
     """
     now = start_position
     length = 0
@@ -236,21 +255,25 @@ def reverse_degree_random_walk(G, walk_length, start_position):
 
 def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
     """
+    強化量固定エッジ強化ランダムウォーク : 強化量固定のエッジ強化ランダムウォーク
+    
+    エッジ強化ランダムウォーク : walkerがエッジを通過するたびのエッジの重みを追加する
+
     Parameters
     ----------
-    G : TYPE
-        DESCRIPTION.
-    walk_length : TYPE
-        DESCRIPTION.
-    start_position : TYPE
-        DESCRIPTION.
-    add_weight : TYPE
-        DESCRIPTION.
+    G : networkx graph
+        random walk を行うネットワーク
+    walk_length : int
+        random walk のステップ数(歩数)
+    start_position : int
+        random walk を行う際のスタート位置(ノード番号)
+    add_weight : float
+        エッジを通過した際に追加する重み
 
     Returns
     -------
-    walk : TYPE
-        DESCRIPTION.
+    walk : list
+        random walk の訪問ノードリスト
 
     """
     
@@ -266,7 +289,7 @@ def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
     while length < walk_length:
         
         #エッジの重みに応じて選択確率は変化, 選択されたエッジを固定分強化
-        selected, matrix[now] = select_add_wight(G, now, matrix[now].tolist()[0], add_weight)
+        selected, matrix[now] = select_add_weight(G, now, matrix[now].tolist()[0], add_weight)
         walk.append(selected)
         
         now = selected
@@ -276,19 +299,21 @@ def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
 
 def reinforce_random_walk(G, walk_length, start_position):
     """
+    次数分強化ランダムウォーク : 次数分エッジを強化するエッジ強化ランダムウォーク
+    
     Parameters
     ----------
-    G : TYPE
-        DESCRIPTION.
-    walk_length : TYPE
-        DESCRIPTION.
-    start_position : TYPE
-        DESCRIPTION.
+    G : networkx graph
+        random walk を行うネットワーク
+    walk_length : int
+        random walk のステップ数(歩数)
+    start_position : int
+        random walk を行う際のスタート位置(ノード番号)
 
     Returns
     -------
-    walk : TYPE
-        DESCRIPTION.
+    walk : list
+        random walk の訪問ノードリスト
 
     """
     now = start_position
