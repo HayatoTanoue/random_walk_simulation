@@ -1,4 +1,5 @@
 import numpy as np
+import networkx as nx
 
 #シンプルランダムウォーク
 def simple_random_walk(G, walk_length, start_position):
@@ -77,9 +78,7 @@ def select_by_reverse_degree(G, now):
     now: int
         　現在位置(ノード番号)
     ----------
-    
     各ノードの次数に反比例した重み付き抽選
-    
     重み = 対象ノードの次数の逆数 / 各接続ノードの次数の逆数和
     
     """
