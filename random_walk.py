@@ -68,11 +68,9 @@ def select_by_reverse_degree(G, now):
     
     return selected
 
-def select_add_weight(G, now, weight_list, add_weight):
+def select_by_weight(G, now, matrix):
     """
-    エッジの重みに応じた選択確率でノードを選択する
     
-    通過したエッジにadd_wieight分エッジの重みを追加する
 
     Parameters
     ----------
@@ -80,73 +78,26 @@ def select_add_weight(G, now, weight_list, add_weight):
         
     now : int
         walkerの現状の位置(ノード番号)
-    weight_list : list
-        now node と接続しているノードとの重みリスト
-    add_weight : float
-        エッジの強化量
-
-    Returns
-    -------
-    selected : int
-        選択されたノード番号
-    weight_list : list
-        選択されたエッジの重みを追加したエッジの重みリスト
-
-    """
-    
-    #重み
-    prob = [weight / sum(weight_list) for weight in weight_list]
-    
-    selected = np.random.choice(list( np.arange(nx.number_of_nodes(G) ) ),
-                                size=1,
-                                p=prob)
-    
-    weight_list[ selected[0] ] += add_weight
-    
-    selected = selected[0]
-    
-    return selected,  weight_list
-
-
-def select_add_degree(G, now, weight_list):
-    """
-    エッジの重みに応じた選択確率でノードを選択する
-    
-    通過したエッジに次数分エッジの重みを追加する
-
-    Parameters
-    ----------
-    G : networkx graph
         
-    now : int
-        walkerの現状の位置(ノード番号)
-    weight_list : list
-        now node と接続しているノードとの重みリスト
-    add_weight : float
-        エッジの強化量
+    matrix : numpy matrix
+        networkの遷移行列
 
     Returns
     -------
     selected : int
         選択されたノード番号
-    weight_list : list
-        選択されたエッジの重みを追加したエッジの重みリスト
 
     """
     
     #重み
-    prob = [weight / sum(weight_list) for weight in weight_list]
+    prob = [weight / sum(matrix[now]) for weight in matrix[now] ]
     
     selected = np.random.choice(list( np.arange(nx.number_of_nodes(G) ) ),
                                 size=1,
                                 p=prob)
-    
-    weight_list[ selected[0] ] += G.degree( now )
-    
     selected = selected[0]
     
-    return selected,  weight_list
-
+    return selected
 
 def simple_random_walk(G, walk_length, start_position):
     """
@@ -333,4 +284,3 @@ def reinforce_random_walk(G, walk_length, start_position):
         now = selected
         length += 1
     return walk
-
