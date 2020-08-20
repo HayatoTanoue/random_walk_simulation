@@ -70,7 +70,7 @@ def select_by_reverse_degree(G, now):
 
 def select_by_weight(G, now, matrix):
     """
-    
+    エッジの重みに応じた選択確率でノードを選択する
 
     Parameters
     ----------
