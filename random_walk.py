@@ -252,7 +252,7 @@ def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
     
     return walk
 
-def reinforce_random_walk(G, walk_length, start_position):
+def degree_reinforce_random_walk(G, walk_length, start_position):
     """
     次数分強化ランダムウォーク : 次数分エッジを強化するエッジ強化ランダムウォーク
     
