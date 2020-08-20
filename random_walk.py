@@ -239,7 +239,12 @@ def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
     while length < walk_length:
         
         #エッジの重みに応じて選択確率は変化, 選択されたエッジを固定分強化
-        selected, matrix[now] = select_add_weight(G, now, matrix[now].tolist()[0], add_weight)
+        selected = select_by_weight(G, now, matrix)
+        
+        #選択された(通過した)エッジに重みを追加する
+        matrix[now, selected] += add_weight
+        matrix[selected, now] += add_weight
+        
         walk.append(selected)
         
         now = selected
@@ -278,7 +283,12 @@ def reinforce_random_walk(G, walk_length, start_position):
     while length < walk_length:
         
         #エッジの重みに応じて選択確率は変化, 選択されたエッジを次数分強化
-        selected, matrix[now] = select_add_degree(G, now, matrix[now].tolist()[0])
+        selected = select_by_weight(G, now, matrix)
+        
+        #選択された(通過した)エッジに重みを追加する(移動前にいたノードの次数分)
+        matrix[now, selected] += G.degree(now)
+        matrix[selected, now] += G.degree(now)
+        
         walk.append(selected)
         
         now = selected
