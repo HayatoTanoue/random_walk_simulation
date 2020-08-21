@@ -231,7 +231,7 @@ def fixed_rainforce_random_walk(G, walk_length, start_position, add_weight):
     length = 0
     
     #networkの遷移行列の作成
-    matrix = nx.to_numpy_matrix(G)
+    matrix = nx.to_numpy_array(G)
     
     #訪問ノードリスト
     walk = list()
@@ -275,7 +275,7 @@ def degree_reinforce_random_walk(G, walk_length, start_position):
     length = 0
     
     #networkの遷移行列の作成
-    matrix = nx.to_numpy_matrix(G)
+    matrix = nx.to_numpy_array(G)
     
     #訪問ノードリスト
     walk = list()
