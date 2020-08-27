@@ -273,21 +273,25 @@ def degree_reinforce_random_walk(G, walk_length, start_position):
     """
     now = start_position
     length = 0
-    
-    #networkの遷移行列の作成
-    matrix = nx.to_numpy_array(G)
-    
+
     #訪問ノードリスト
     walk = list()
+
+    #隣接リストの作成
+    adj_list = nx.to_dict_of_lists(G)
+    #重みリストの作成
+    weight_list = {}
+    for l in range(nx.number_of_nodes(G)):
+        weight_list.setdefault(l, [1 for i in adj_list[l]])
     
     while length < walk_length:
         
         #エッジの重みに応じて選択確率は変化, 選択されたエッジを次数分強化
-        selected = select_by_weight(G, now, matrix)
+        selected = random.choices(adj_list[now], k=1, weights=weight_list[now])[0]
         
         #選択された(通過した)エッジに重みを追加する(移動前にいたノードの次数分)
-        matrix[now, selected] += G.degree(now)
-        matrix[selected, now] += G.degree(now)
+        weight_list[ now ][ adj_list[now].index(selected) ] += G.degree(now)
+        weight_list[ selected ][ adj_list[selected].index(now) ] += G.degree(now)
         
         walk.append(selected)
         
