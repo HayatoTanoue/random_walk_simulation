@@ -274,38 +274,3 @@ def degree_reinforce_random_walk(G, walk_length, start_position):
         now = selected
         length += 1
     return walk
-
-def make_adj_list(G):
-    """
-    各ノードの接続ノードとエッジのweightに比例した遷移確率のセットのリストを作成
-    {node_num : 
-        { nodes : [接続ノードリスト], prob : [遷移確率リスト] }
-    }
-
-    """
-    adj_list = {}
-
-    for node in G.nodes():
-        neighbor = [i[1] for i in G.edges(node,data=True)]
-        p = [i[2]['weight'] for i in G.edges(node,data=True)]
-        p = np.array(p) / sum(p)
-        adj_list.setdefault(node, {'nodes':neighbor, 'prob':list(p)})
-
-    return adj_list
-
-def random_walk_by_edge_weight(G, walk_length, start_position, adj_list):
-    now = start_position
-    length = 0
-    
-    #訪問ノードリスト
-    walk = list()
-    while length < walk_length:
-        #エッジの重みに応じて選択確率は変化, 選択されたエッジを次数分強化
-        selected =  np.random.choice(adj_list[now]['nodes'], 
-                                 size=1, 
-                                 p=adj_list[now]['prob'])[0]
-        
-        walk.append(selected)
-        now = selected
-        length += 1
-    return walk
