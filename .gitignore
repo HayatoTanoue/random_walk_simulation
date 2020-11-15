@@ -1,0 +1,8 @@
+*.pyc
+__pycache__
+
+build/*
+dist/*
+
+# Generated when 'python setup_egg.py'
+random_walk_simulation.egg-info/
