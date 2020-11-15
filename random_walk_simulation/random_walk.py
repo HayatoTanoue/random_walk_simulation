@@ -47,8 +47,8 @@ class Random_Walk:
         else:
             for node in self.G.nodes():
                 neighbor = [i[1] for i in self.G.edges(node,data=True)]
-                prob = [i[2]['weight'] for i in self.G.edges(node,data=True)]
-                prob = np.array(prob) / sum(prob)
+                ratio = [i[2]['weight'] for i in self.G.edges(node,data=True)]
+                prob = np.array(ratio) / sum(ratio)
                 prob_dict.setdefault(node, {'nodes':neighbor, 'prob':list(prob)})
 
         self.prob_dict = prob_dict
