@@ -34,7 +34,7 @@ $ pip install -i https://test.pypi.org/simple/ random-walk-simulation
 
 # Usage
 
-```
+```python
 
 from random_walk_simulation import Random_Walk
 
