@@ -47,12 +47,19 @@ simulation.random_walk_by_prob_dict(10, 'a')
 
 #シンプル ランダムウォーク
 simple_walk = Random_Walk(G, 'simple')
+simple_walk.random_walk_by_prob_dict(10, 'a')
+
 #次数比例 ランダムウォーク
 degree = Random_Walk(G, 'degree')
+degree.random_walk_by_prob_dict(10, 'a')
+
 #次数の逆数比例 ランダムウォーク
 reverse_degree = Random_Walk(G, 'reverse')
+reverse_degree.random_walk_by_prob_dict(10, 'a')
+
 #エッジの重み比例 ランダムウォーク
 edge_weight = Random_Walk(G, 'weight')
+edge_weight.random_walk_by_prob_dict(10, 'a')
 
 ```
 
