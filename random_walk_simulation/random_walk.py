@@ -18,7 +18,7 @@ class Random_Walk:
         self.G = G
         self.kind = kind
 
-        self.prob_dict = self._make_prob_dict(self)
+        self.prob_dict = self._make_prob_dict()
 
     def _make_prob_dict(self):
         """
