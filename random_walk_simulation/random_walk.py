@@ -3,7 +3,7 @@ import numpy as np
 import networkx as nx
 
 class Random_Walk:
-    def __init__(self, G, walk_length, kind):
+    def __init__(self, G, kind):
         """
         Parameters
         ----------
@@ -16,10 +16,11 @@ class Random_Walk:
             ex. 'simple', 'degree', 'reverse', 'weight'
         """
         self.G = G
-        self.walk_length = walk_length
         self.kind = kind
 
-    def make_prob_dict(self):
+        self.prob_dict = self.make_prob_dict(self)
+
+    def _make_prob_dict(self):
         """
         各ノード地点での各ノードへの遷移確率リストの作成
         
@@ -55,7 +56,7 @@ class Random_Walk:
         
         return prob_dict
 
-    def random_walk_by_prob_dict(self, start_position, start_count=False):
+    def random_walk_by_prob_dict(self, walk_length, start_position, start_count=False):
         """
         prob_dict(遷移確率)に従って重み付けされた抽選での
         ランダムウォークを行う
