@@ -39,7 +39,7 @@ class Random_Walk:
                     ratio = [1 for _ in v]
                 elif self.kind == 'degree':
                     ratio = [self.G.degree(node) for node in v]
-                elif self.kind == 'degree':
+                elif self.kind == 'reverse':
                     ratio = [1 / self.G.degree(node) for node in v]
 
                 prob = np.array(ratio) / sum(ratio) #確率に変換

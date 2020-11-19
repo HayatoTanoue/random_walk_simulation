@@ -24,7 +24,7 @@
 '''
 
 __author__ = 'Hayato Tanoue'
-__version__ = '0.3'
+__version__ = '0.4'
 __license__ = 'MIT'
 
 from .random_walk import Random_Walk
