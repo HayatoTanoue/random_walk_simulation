@@ -38,6 +38,9 @@ $ pip install -i https://test.pypi.org/simple/ random-walk-simulation
 
 from random_walk_simulation import Random_Walk
 
+# G = networkx graph
+# (現状 : 無向グラフを想定)
+
 #ランダムウォークを行うnetwork, ランダムウォークの種類を設定
 simulation = Random_Walk(G, 'simple')
 
